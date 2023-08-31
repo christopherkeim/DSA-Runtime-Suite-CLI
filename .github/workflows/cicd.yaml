@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: python:3.9-slim-buster
+    env:
+      POETRY_VIRTUALENVS_IN_PROJECT: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: install system dependencies
+        run: |
+          apt update && apt upgrade -y
+          apt install -y make
+      - name: install packages with Poetry
+        run: |
+          pip install --upgrade pip
+          pip install poetry==1.5.1
+          poetry --version
+          poetry config virtualenvs.in-project true
+          poetry install --no-interaction
+      - name: lint
+        run: make lint
+      - name: test
+        run: make test
+      - name: format
+        run: make format
+      - name: deploy
+        run: make deploy
