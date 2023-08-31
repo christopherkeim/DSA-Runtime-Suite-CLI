@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-template"
+name = "dsa-runtime-suite-cli"
 version = "0.1.0"
 description = ""
 authors = ["Chris"]
